@@ -1,15 +1,13 @@
+
 const express = require('express');
-const app = express();
+const http = require('http');
 const path = require('path');
-var compression = require('compression');
-const router = express.Router();
-
-app.use(compression());
-app.use(express.static('dist'));
-router.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname + '/dist/index.html'));
+const app = express();
+const port = 4020;
+app.use(express.static(__dirname + '/dist/'));
+app.get('/*', (req, res)=>{
+    res.sendFile(path.join(__dirname + "/dist/index.html"));
 });
-app.use('/', router);
-app.listen(process.env.port || 4020);
 
-console.log('Running at Port 4020');
+const server = http.createServer(app);
+server.listen(port, ()=>console.log("Running"));
